@@ -18,6 +18,7 @@ def model_training_workflow(data_path: str):
     - evaluating the model on the test data
     :param data_path: a string containing the location of the training data 
     """
+    logger.info("Hello !")
 
     # - fetching input data
     data = fetch_csv_data(data_path, separator=",")
@@ -28,14 +29,18 @@ def model_training_workflow(data_path: str):
     (test_x, test_y) = train_test_sets["test"]
 
     # - definning the model
+    logger.info("Definning the model")
     model = build_wine_predictor_model()
 
     # - fitting the model on the training data
+    logger.info("Fitting the model on the training data")
     model.fit(train_x, train_y)
 
     # - evaluating the model on the test data
-    (rmse, mae, r2) = compute_model_metrics(model, test_x, test_y)
+    logger.info("Evaluating the model on the test data")
+    metrics = compute_model_metrics(model, test_x, test_y)
 
-    print("  RMSE: %s" % rmse)
-    print("  MAE: %s" % mae)
-    print("  R2: %s" % r2)
+    logger.info("Metrics")
+    print("  RMSE: %s" % metrics["rmse"])
+    print("  MAE: %s" % metrics["mae"])
+    print("  R2: %s" % metrics["r2"])
