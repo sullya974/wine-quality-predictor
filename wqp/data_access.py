@@ -12,8 +12,9 @@ def fetch_csv_data(url: str, separator: Optional[str]) -> pd.DataFrame:
     try:
         return pd.read_csv(url, sep=';')
     except Exception as e:
-        return logger.exception(
-            "Unable to download training & test CSV, check your internet connection. Error: %s", e)
+        # return logger.exception(
+        #     "Unable to download training & test CSV, check your internet connection. Error: %s", e)
+        return e
 
 
 def build_train_test_sets(data: pd.DataFrame, label_col: str, train_size: float) -> Dict[str, Tuple[pd.DataFrame, pd.DataFrame]]:
