@@ -24,7 +24,30 @@ def fetch_csv_data(url: str, separator: Optional[str]) -> pd.DataFrame:
         return logger.exception(
             "Unable to download training & test CSV, check your internet connection. Error: %s", e)
 
-    
+
+def build_train_test_sets(data: pd.DataFrame, label_col: str, train_size: float) -> Dict[str, Tuple[pd.DataFrame, pd.DataFrame]]:
+    """
+    A function to split the data into training and test sets.
+
+    :param data: a pandas dataframe
+    :param label_col: the label column name
+    :param train_size: flaot. The fraction of the whole dataset used for training.
+    :return: a Dictionary of key (string) - value (tuple of pandas dataframes) containing training and test data.
+    Dictionary keys:
+        - train: contains (train_x, train_y)
+        - test: contains (test_x, test_y
+    """
+    train, test = train_test_split(data)
+
+    train_x = train.drop([label_col], axis=1)
+    test_x = test.drop([label_col], axis=1)
+    train_y = train[label_col]
+    test_y = test[label_col]
+
+    return {
+        "train": (train_x, train_y),
+        "test": (test_x, test_y)
+    }
 
     # # Split the data into training and test sets. (0.75, 0.25) split.
     # train, test = train_test_split(data)
