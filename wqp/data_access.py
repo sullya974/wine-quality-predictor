@@ -1,8 +1,6 @@
 from sklearn.model_selection import train_test_split
 from typing import Optional, Tuple, Dict
 import pandas as pd
-import logging
-import warnings
 
 def fetch_csv_data(url: str, separator: Optional[str]) -> pd.DataFrame:
     """
@@ -11,13 +9,6 @@ def fetch_csv_data(url: str, separator: Optional[str]) -> pd.DataFrame:
     :param separator: an optional separator to override the default separator (comma)
     :return: a Pandas Dataframe containing the loaded data
     """
-    logging.basicConfig(level=logging.WARN)
-    logger = logging.getLogger(__name__)
-    warnings.filterwarnings("ignore")
-
-    # Read the wine-quality csv file from the URL
-    # csv_url = \
-    #     'http://archive.ics.uci.edu/ml/machine-learning-databases/wine-quality/winequality-red.csv'
     try:
         return pd.read_csv(url, sep=';')
     except Exception as e:
@@ -37,7 +28,7 @@ def build_train_test_sets(data: pd.DataFrame, label_col: str, train_size: float)
         - train: contains (train_x, train_y)
         - test: contains (test_x, test_y
     """
-    train, test = train_test_split(data)
+    train, test = train_test_split(data, train_size=train_size)
 
     train_x = train.drop([label_col], axis=1)
     test_x = test.drop([label_col], axis=1)
@@ -48,13 +39,3 @@ def build_train_test_sets(data: pd.DataFrame, label_col: str, train_size: float)
         "train": (train_x, train_y),
         "test": (test_x, test_y)
     }
-
-    # # Split the data into training and test sets. (0.75, 0.25) split.
-    # train, test = train_test_split(data)
-
-    # # The predicted column is "quality" which is a scalar from [3, 9]
-    # train_x = train.drop(["quality"], axis=1)
-    # test_x = test.drop(["quality"], axis=1)
-    # train_y = train[["quality"]]
-    # test_y = test[["quality"]]
-
